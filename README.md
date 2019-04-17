@@ -1,4 +1,4 @@
-Caraninho project's back-end.
+Canarinho project's back-end.
 
 In the project directory, you can run:
 
