@@ -1,5 +1,5 @@
 const express = require('express');
-const UserModel = require('./models/user.model')
+const UserModel = require('../models/user.model')
 const router = express.Router();
 
 /**
@@ -36,7 +36,6 @@ router.get('/user', (req, res) => {
     }).catch(err => {
         res.status(500).json(err);
     });
-
 });
 
 /**
@@ -47,20 +46,16 @@ router.patch('/user', (req, res) => {
         return res.status(400).send('Missing paramater: email');
     }
 
-    UserModel.findOneAndUpdate({
-        email: req.query.email
-    }, {
-        $set: {
-            username: req.query.username
-        },
-    }, {
-        new: true
-    }).then(doc => {
-        res.json(doc);
-    }).catch(err => {
-        res.status(500).json(err);
-    });
-
+    UserModel.findOneAndUpdate(
+        { email: req.query.email }, {
+            $set: { username: req.query.username },
+        }, {
+            new: true
+        }).then(doc => {
+            res.json(doc);
+        }).catch(err => {
+            res.status(500).json(err);
+        });
 });
 
 module.exports = router;
