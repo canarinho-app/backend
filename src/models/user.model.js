@@ -11,9 +11,9 @@ mongoose.connect(mongooseConnectionString, options);
  * Watch the connection with the local database.
  */
 mongoose.connection.once('open', () => {
-    console.log('Connected with database.')
+    console.log('Connected to database.')
 }).on('error', err => {
-    console.log('Error connecting with database', err)
+    console.log('Error connecting to database', err)
 }
 );
 
