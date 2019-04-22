@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const TweetSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Schema.ObjectId,
+        auto: true
+    },    
     like: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -17,7 +21,7 @@ const TweetSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
     comment: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
