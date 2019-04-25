@@ -1,24 +1,5 @@
 const mongoose = require('mongoose');
 
-const options = {
-    useNewUrlParser: true
-};
-
-const mongooseConnectionString = 'mongodb://localhost/Users';
-mongoose.connect(mongooseConnectionString, options);
-
-/**
- * Watch the connection with the local database.
- */
-mongoose.connection.once('open', () => {
-    console.log('Connected to database.')
-}).on('error', err => {
-    console.log('Error connecting to database', err)
-}
-);
-
-mongoose.set('useCreateIndex', true);
-
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
