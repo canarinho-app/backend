@@ -4,7 +4,7 @@ const options = {
     useNewUrlParser: true
 };
 
-const mongooseConnectionString = 'mongodb://localhost/Users';
+const mongooseConnectionString = 'mongodb://localhost/canarinho';
 mongoose.connect(mongooseConnectionString, options);
 
 /**
