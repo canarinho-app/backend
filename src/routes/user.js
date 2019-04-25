@@ -25,12 +25,12 @@ router.post('/user', (req, res) => {
  * GET route for User retrivial.
  */
 router.get('/user', (req, res) => {
-    if (!req.query.email) {
-        return res.status(400).send('Missing paramater: email');
+    if (!req.query.username) {
+        return res.status(400).send('Missing paramater: username');
     }
 
     UserModel.findOne({
-        email: req.query.email
+        username: req.query.username
     }).then(doc => {
         res.json(doc);
     }).catch(err => {
@@ -42,13 +42,13 @@ router.get('/user', (req, res) => {
  * PATCH route for User update.
  */
 router.patch('/user', (req, res) => {
-    if (!req.query.email) {
-        return res.status(400).send('Missing paramater: email');
+    if (!req.query.username) {
+        return res.status(400).send('Missing paramater: username');
     }
 
     UserModel.findOneAndUpdate(
-        { email: req.query.email }, {
-            $set: { username: req.query.username },
+        { username: req.query.username }, {
+            $set: { displayname: req.body.displayname },
         }, {
             new: true
         }).then(doc => {
