@@ -55,7 +55,7 @@ router.patch('/user', (req, res) => {
         { username: req.query.username }, {
             $set: { displayname: req.body.displayname },
         }, {
-            new: true
+            new: true, runValidators: true
         }).then(doc => {
             res.json(doc);
         }).catch(err => {
