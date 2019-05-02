@@ -24,5 +24,8 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 
 module.exports = {
-    User : require('../models/user.model')
+    User : require('../models/user.model'),
+    Content : require('../models/content.model'),
+    Comment : require('../models/comment.model'),
+    Tweet : require('../models/tweet.model')
 }

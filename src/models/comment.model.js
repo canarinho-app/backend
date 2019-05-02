@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 
+
 const CommentSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Schema.ObjectId,
+        auto: true
+    },
     content: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Content'

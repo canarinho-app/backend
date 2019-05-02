@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 
+
 const ContentSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Schema.ObjectId,
+        auto: true
+    },
     media: {
         data: Buffer,
         contentType: String
@@ -12,4 +17,5 @@ const ContentSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Content', ContentSchema );
+
+module.exports = mongoose.model('Content', ContentSchema);
