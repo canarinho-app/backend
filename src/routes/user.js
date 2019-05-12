@@ -1,15 +1,43 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const path = require('path')
 const bcrypt = require('bcryptjs');
-const config = require('config.json');
-const db = require('../_helpers/db')
+const db = require('../_helpers/db');
+const multer = require('multer');
 const UserModel = db.User;
 const router = express.Router();
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../uploads/'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        // rejects storing a file
+        cb(null, false);
+    }
+}
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
 
 /**
  * POST route for User creation.
  */
-router.post('/user', async function (req, res)  {
+router.post('/user', async function (req, res) {
     if (!req.body) {
         return res.status(400).send('Request Body is missing!');
     }
@@ -40,9 +68,9 @@ router.post('/user', async function (req, res)  {
  * Verify if a user already exists with the given username.
  * @param {String} username 
  */
-async function findUserByUsername (username) {
+async function findUserByUsername(username) {
     try {
-        return UserModel.findOne({username: username})
+        return UserModel.findOne({ username: username })
     } catch (error) {
         throw new Error(`Unable to connect to the database.`)
     }
@@ -52,9 +80,9 @@ async function findUserByUsername (username) {
  * Verify if a user already exists with the given email.
  * @param {String} email 
  */
-async function findUserByEmail (email) {
+async function findUserByEmail(email) {
     try {
-        return UserModel.findOne({email: email})
+        return UserModel.findOne({ email: email })
     } catch (error) {
         throw new Error(`Unable to connect to the database.`)
     }
@@ -107,9 +135,21 @@ router.post('/authenticate', (req, res) => {
                 res.json(user);
             }
             else {
-                res.status(400).json({ message: 'Username or password is incorrect.' })
+                res.status(400).json({ message: 'Username or password is incorrect.' });
             }
         }).catch(err => next(err));
+});
+
+
+router.post('/user/profileImg', upload.single('imageData'), (req, res) => {
+    const imagePath = req.file.filename;
+
+    if (imagePath) {
+        res.json(imagePath);
+    }
+    else {
+        res.status(500).json({ message: 'Error connecting to database.' });
+    }
 });
 
 module.exports = router;
