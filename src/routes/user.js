@@ -106,6 +106,24 @@ router.get('/user', (req, res) => {
 });
 
 /**
+ * GET route for Users retrivial.
+ */
+
+router.get('/users', (req, res) => {
+    if (!req.query.username) {
+        return res.status(400).send('Missing paramater: username');
+    }
+
+    UserModel.find({
+        username: {$regex: [req.query.username]}
+    }).then(doc => {
+        res.json(doc);
+    }).catch(err => {
+        res.status(500).json(err);
+    });
+});
+
+/**
  * PATCH route for User update.
  */
 router.patch('/user', (req, res) => {
