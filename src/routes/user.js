@@ -148,7 +148,7 @@ router.patch('/user', (req, res) => {
  * PATCH route for User authentication.
  */
 router.post('/authenticate', (req, res) => {
-    UserModel.findOne({ email: req.body.user.email })
+    UserModel.findOne({ username: req.body.user.username })
         .then(user => {
             if (user && bcrypt.compareSync(req.body.user.password, user.password)) {
                 res.json(user);
