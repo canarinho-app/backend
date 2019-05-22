@@ -106,6 +106,24 @@ router.get('/user', (req, res) => {
 });
 
 /**
+ * GET route for Users retrivial.
+ */
+
+router.get('/users', (req, res) => {
+    if (!req.query.username) {
+        return res.status(400).send('Missing paramater: username');
+    }
+
+    UserModel.find({
+        username: {$regex: [req.query.username]}
+    }).then(doc => {
+        res.json(doc);
+    }).catch(err => {
+        res.status(500).json(err);
+    });
+});
+
+/**
  * PATCH route for User update.
  */
 router.patch('/user', (req, res) => {
@@ -130,7 +148,7 @@ router.patch('/user', (req, res) => {
  * PATCH route for User authentication.
  */
 router.post('/authenticate', (req, res) => {
-    UserModel.findOne({ email: req.body.user.email })
+    UserModel.findOne({ username: req.body.user.username })
         .then(user => {
             if (user && bcrypt.compareSync(req.body.user.password, user.password)) {
                 res.json(user);
