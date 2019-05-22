@@ -7,7 +7,7 @@ const TweetSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         auto: true
     },    
-    like: [{
+    likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
@@ -24,16 +24,19 @@ const TweetSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    comment: [{
+    comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment'
+        ref: 'Tweet'
     }],
     content: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Content',
         required: true
+    },
+    isResponse: {
+        type: Boolean, 
+        default: false
     }
 });
-
 
 module.exports = mongoose.model('Tweet', TweetSchema);

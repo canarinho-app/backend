@@ -50,4 +50,26 @@ router.delete('/tweet', (req,res) => {
     })
 });
 
+
+/**
+ * PATCH route for Tweet, updating likes and comments.
+ */
+router.patch('/tweet', (req, res) => {
+    if (!req.query.id) {
+        return res.status(400).send('Missing paramater: id');
+    }
+    console.log(req.body)
+    TweetModel.findOneAndUpdate(
+        { id: req.query.id }, {
+            $addToSet: { likes: req.body.likes },
+            $addToSet: { comments: req.body.comments }
+        }, {
+            new: true, runValidators: true
+        }).then(doc => {
+            res.json(doc);
+        }).catch(err => {
+            res.status(500).json(err);
+        });
+});
+
 module.exports = router;

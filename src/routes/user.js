@@ -153,4 +153,18 @@ router.post('/user/profileImg', upload.single('imageData'), (req, res) => {
     }
 });
 
+router.get('/userId', (req, res) => {
+    if (!req.query.id) {
+        return res.status(400).send('Missing paramater: id');
+    }
+
+    UserModel.findById(
+        req.query.id
+    ).then(doc => {
+        res.json(doc);
+    }).catch(err => {
+        res.status(500).json(err);
+    });
+});
+
 module.exports = router;
