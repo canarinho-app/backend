@@ -4,14 +4,14 @@ const db = require('../_helpers/db')
 const TweetModel = db.Tweet;
 const router = express.Router();
 
-router.post("/tweet", (req,res) => {
-    if(!req.body){
+router.post("/tweet", (req, res) => {
+    if (!req.body) {
         return res.status(400).send("Request body is missing!");
     }
 
     const model = new TweetModel(req.body);
-    model.save().then(doc =>{
-        if(!doc || doc.length === 0){
+    model.save().then(doc => {
+        if (!doc || doc.length === 0) {
             return res.status(500).send(doc);
         }
         res.status(201).send(doc);
@@ -21,29 +21,29 @@ router.post("/tweet", (req,res) => {
 });
 
 
-router.get('/tweet', (req,res) => {
-    if(!req.query.id){
+router.get('/tweet', (req, res) => {
+    if (!req.query.id) {
         return res.status(400).send("Missing parameter: id");
     }
 
     TweetModel.findOne({
         id: req.query.id
-    }).then( doc =>{
+    }).then(doc => {
         res.json(doc);
-    }).catch(err =>{
+    }).catch(err => {
         res.status(500).json(err);
     });
 });
 
 
-router.delete('/tweet', (req,res) => {
-    if(!req.body.id){
+router.delete('/tweet', (req, res) => {
+    if (!req.body.id) {
         return res.status(400).send("Missing parameter: id");
     }
 
     TweetModel.findByIdAndRemove({
         id: req.body.id
-    }).then( doc => {
+    }).then(doc => {
         res.json(doc);
     }).catch(err => {
         res.status(500).json(err);
@@ -58,13 +58,32 @@ router.patch('/tweet', (req, res) => {
     if (!req.query.id) {
         return res.status(400).send('Missing paramater: id');
     }
-    console.log(req.body)
+    
     TweetModel.findOneAndUpdate(
         { id: req.query.id }, {
-            $addToSet: { likes: req.body.likes },
-            $addToSet: { comments: req.body.comments }
+            $addToSet: { likes: req.body.likes, comments: req.body.comments }
         }, {
             new: true, runValidators: true
+        }).then(doc => {
+            res.json(doc);
+        }).catch(err => {
+            res.status(500).json(err);
+        });
+});
+
+/**
+ * PATCH route for Tweet, updating likes and comments.
+ */
+router.patch('/tweet/delete', (req, res) => {
+    if (!req.query.id) {
+        return res.status(400).send('Missing paramater: id');
+    }
+    
+    TweetModel.findOneAndUpdate(
+        { id: req.query.id }, {
+            $pull: { likes: req.body.likes[0] }
+        }, {
+           new: true, runValidators: true
         }).then(doc => {
             res.json(doc);
         }).catch(err => {
