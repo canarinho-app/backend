@@ -18,10 +18,16 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
     displayname: {
         type: String,
         required: true
     },
+
+    bio: {
+        type:String
+    },
+
     description: String,
     followers: [{
         type: mongoose.Schema.Types.ObjectId,

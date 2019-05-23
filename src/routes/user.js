@@ -144,6 +144,29 @@ router.patch('/user', (req, res) => {
         });
 });
 
+router.patch('/user/profile', (req, res) => {
+    if (!req.query.username) {
+        return res.status(400).send('Missing paramater: username');
+    }
+
+    console.log(req.body.userData)
+
+    req.body.userUpdate.password = bcrypt.hashSync(req.body.userUpdate.password, 10);
+
+    UserModel.findOneAndUpdate(
+        
+        { username: req.query.username }, {
+            $set: { displayname: req.body.userUpdate.displayname , bio: req.body.userUpdate.bio, password: req.body.userUpdate.password}
+        }, {
+            new: true, runValidators: true
+        }).then(doc => {
+            res.json(doc);
+            console.log(doc)
+        }).catch(err => {
+            res.status(500).json(err);
+        });
+});
+
 /**
  * PATCH route for User authentication.
  */
