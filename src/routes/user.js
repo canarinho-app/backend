@@ -42,6 +42,11 @@ router.post('/user', async function (req, res) {
         return res.status(400).send('Request Body is missing!');
     }
 
+
+    if(!req.body.password === null || req.body.password === ''){
+        return res.status(400).send('Invalid Password!')
+    }
+
     req.body.password = bcrypt.hashSync(req.body.password, 10);
 
     const containsUsername = await findUserByUsername(req.body.username);
@@ -147,6 +152,10 @@ router.patch('/user', (req, res) => {
 router.patch('/user/profile', (req, res) => {
     if (!req.query.username) {
         return res.status(400).send('Missing paramater: username');
+    }
+
+    if(!req.body.userData.password === null || req.body.userData.password === ''){
+        return res.status(400).send('Invalid Password!')
     }
 
     console.log(req.body.userData)
