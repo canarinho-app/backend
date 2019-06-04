@@ -139,7 +139,7 @@ router.patch('/user', (req, res) => {
     UserModel.findOneAndUpdate(
         { username: req.query.username }, {
             $set: { displayname: req.body.displayname },
-            $addToSet: { tweets: req.body.tweets }
+            $addToSet: { tweets: req.body.tweets, following: req.body.following, followers: req.body.followers }
         }, {
             new: true, runValidators: true
         }).then(doc => {
@@ -148,6 +148,7 @@ router.patch('/user', (req, res) => {
             res.status(500).json(err);
         });
 });
+
 
 router.patch('/user/profile', (req, res) => {
     if (!req.query.username) {
