@@ -12,8 +12,8 @@ const TweetSchema = new mongoose.Schema({
         ref: 'User'
     }],
     retweet: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tweet'
+        type: Boolean,
+        default: false
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
